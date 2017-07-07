@@ -23,7 +23,7 @@
 #include <Adafruit_GFX.h>
 #include "Adafruit_LEDBackpack.h"
 
-#define NODE_MCU_AMICA
+//#define NODE_MCU_AMICA
 
 // ------------------begin ESP8266'centric----------------------------------
 #ifdef NODE_MCU_AMICA
@@ -37,25 +37,20 @@ extern "C" {
 // ------------------end ESP8266'centric------------------------------------
 
 #ifdef NODE_MCU_AMICA
-  #define GPIO_D0  (16)
-  #define GPIO_D1  (5)
-  #define GPIO_D2  (4)
-  #define GPIO_D3  (0)
-  #define GPIO_D4  (2) //Module LED(Low Act.)
-  #define GPIO_D5  (14)
-  #define GPIO_D6  (12)
-  #define GPIO_D7  (13)
-  #define GPIO_D8  (15)
-  #define GPIO_D9  (3)
-  #define GPIO_D10 (1)
-  #define GPIO_D11 (9)
-  #define GPIO_D12 (10)
+#define GPIO_D0  (16)
+#define GPIO_D1  (5)
+#define GPIO_D2  (4)
+#define GPIO_D3  (0)
+#define GPIO_D4  (2) //Module LED(Low Act.)
+#define GPIO_D5  (14)
+#define GPIO_D6  (12)
+#define GPIO_D7  (13)
+#define GPIO_D8  (15)
+#define GPIO_D9  (3)
+#define GPIO_D10 (1)
+#define GPIO_D11 (9)
+#define GPIO_D12 (10)
 #endif
-
-#ifndef _BV
-#define _BV(bit) (1<<(bit))
-#endif
-//    matrix.displaybuffer[i] = _BV((counter+i) % 16) | _BV((counter+i+8) % 16)  ;
 
 Adafruit_LEDBackpack matrix = Adafruit_LEDBackpack();
 
@@ -121,10 +116,10 @@ void setup() {
   Serial.println("Alpha Oh");
 
 #ifdef NODE_MCU_AMICA
-  Wire.pins(GPIO_D5, GPIO_D6);   /* SDA(D2), SCL(D5) */
+  Wire.pins(GPIO_D5, GPIO_D6);   /* SDA(D5), SCL(D6) */
 #endif
   matrix.begin(0x70);  // pass in the address
-  matrix.setBrightness(0);
+  matrix.setBrightness(10);
 }
 
 static long frame_exec = 0; // フレーム周期管理用
@@ -138,7 +133,6 @@ void loop() {
   wdt_reset();
 #endif
   // ------------------end ESP8266'centric------------------------------------
-  
   long now = millis();
 
   if (now - frame_exec > 100) { // 100ms周期のフレーム処理
@@ -357,8 +351,8 @@ void keyHandler() {
       /* キー確定 */
       actKey = currentKey;
       boKeyEvent = true;
-      Serial.print("キー確定: ");
-      Serial.println(actKey);
+      //      Serial.print("キー確定: ");
+      //      Serial.println(actKey);
     }
   }
 }
